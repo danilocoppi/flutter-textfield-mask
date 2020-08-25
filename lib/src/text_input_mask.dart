@@ -8,7 +8,7 @@ class TextInputMask extends TextInputFormatter with MagicMask {
   bool reverse;
   int maxLength;
 
-  TextInputMask({this.mask = 'X*', this.reverse = false, this.maxLength = -1}) {
+  TextInputMask({this.mask, this.reverse = false, this.maxLength = -1}) {
     buildMaskTokens(mask);
   }
 
@@ -17,6 +17,4 @@ class TextInputMask extends TextInputFormatter with MagicMask {
           TextEditingValue oldValue, TextEditingValue newValue) =>
       TextEditingValue.fromJSON(executeMasking(
           newValue.text, newValue.selection.baseOffset, reverse, maxLength));
-
-
 }

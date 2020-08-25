@@ -1,5 +1,5 @@
 name: easy_mask
-version: 0.0.3
+version: 0.0.4
 
 description: TextInputMask ready to be used just passing a String patterned parameter.
 homepage: https://github.com/danilocoppi/flutter-textfield-mask

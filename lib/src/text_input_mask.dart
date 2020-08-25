@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'magic_mask.dart';
+import '../easy_mask.dart';
 
 class TextInputMask extends TextInputFormatter with MagicMask {
   String mask;
@@ -14,7 +15,13 @@ class TextInputMask extends TextInputFormatter with MagicMask {
 
   @override
   TextEditingValue formatEditUpdate(
-          TextEditingValue oldValue, TextEditingValue newValue) =>
-      TextEditingValue.fromJSON(executeMasking(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    try {
+      return TextEditingValue.fromJSON(executeMasking(
           newValue.text, newValue.selection.baseOffset, reverse, maxLength));
+    } catch (e) {
+      print(e);
+    }
+    return newValue;
+  }
 }

@@ -47,7 +47,7 @@ class MagicMask {
     }
   }
 
-  Map executeMasking(
+  Map<String, dynamic> executeMasking(
       String text, int cursorPosition, bool reverse, int maxLenght) {
     if (text == null || text.isEmpty || _tags.length == 0)
       return _buildResultJson('', 0, maxLenght);
@@ -72,14 +72,13 @@ class MagicMask {
       currentChar = text[_charIndex] ?? '';
     }
 
-    while (_isNotLastMask()) {
+    if (!_isNotLastMask(0)) {
       _tagIndex += _step;
-      var tag = _tags[_tagIndex];
-      if (tag[type] == fixChar) {
+      while (_tagIndex >= 0 && _tagIndex < _tags.length) {
+        var tag = _tags[_tagIndex];
         _appendText(tag[value]);
         incrementCharDeslocation(1);
-      } else {
-        break;
+        _tagIndex += _step;
       }
     }
 
@@ -122,7 +121,7 @@ class MagicMask {
         if (_match(tagValue, char)) {
           _appendText(char);
           tag['readed'] = '1';
-        } else if (tag['readed'].isNotEmpty && _isNotLastMask()) {
+        } else if (tag['readed'].isNotEmpty && _isNotLastMask(0)) {
           _tagIndex += _step;
           _applyTagMask(char);
         } else {
@@ -132,7 +131,7 @@ class MagicMask {
       case multipleOpt:
         if (_match(tagValue, char)) {
           _appendText(char);
-        } else if (_isNotLastMask()) {
+        } else if (_isNotLastMask(0)) {
           _tagIndex += _step;
           _applyTagMask(char);
         } else {
@@ -144,8 +143,19 @@ class MagicMask {
     }
   }
 
-  bool _isNotLastMask() =>
-      _tagIndex + _step >= 0 && _tagIndex + _step < _tags.length;
+  bool _isNotLastMask(int baseStep) {
+    if (_tagIndex + _step + baseStep >= 0 &&
+        _tagIndex + _step + baseStep < _tags.length) {
+      var tag = _tags[_tagIndex + _step + baseStep];
+      if (tag[type] != fixChar) {
+        return true;
+      } else {
+        return _isNotLastMask(baseStep + _step);
+      }
+    } else {
+      return false;
+    }
+  }
 
   void incrementCharDeslocation(int step) {
     if (_charIndex < _cursorPosition) _charDeslocation += step;
@@ -157,7 +167,8 @@ class MagicMask {
     _maskedText = _reverse ? '$char$_maskedText' : '$_maskedText$char';
   }
 
-  Map _buildResultJson(String text, int cursorPos, int maxLengh) {
+  Map<String, dynamic> _buildResultJson(
+      String text, int cursorPos, int maxLengh) {
     if (maxLengh > 0) {
       if (_reverse) {
         text = text.substring(max(0, text.length - maxLengh));
@@ -165,7 +176,7 @@ class MagicMask {
         text = text.substring(0, maxLengh);
       }
     }
-    return {
+    return <String, dynamic>{
       "text": text,
       "selectionBase": cursorPos,
       "selectionExtent": cursorPos

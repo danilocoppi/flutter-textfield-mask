@@ -1,14 +1,17 @@
 # Easy Mask
 
-Easy way to apply inputMask to Flutter's TextFields.
-Its used passing on widget creation passing on TextField's parameter inputFormatters.
+Easy way to apply a mask to Flutter's TextFields.
 
-The mask formatter cares about user's cursor position, to make fluid the user iteration.
+To use it, you only need to pass EasyMask on TextField's parameter inputFormatters.
+
+The Easy Mask cares about user's cursor position, to make fluid it's usability.
 
 # Usage
 
 **Simple Sample**
+
 `Import package:easy_mask/text_input_mask.dart`
+
 Then instantiate `TextInputMask` passing at least a String `mask` parameter.
 
 ``` example
@@ -47,7 +50,11 @@ Any other letters will be displayed on masking.
 #### *Examples*
 
 (card number) 999 999 999 999
+
 (us cellphone) \\\+1 (999) 999 99 99
+
 (currency) $ 9+,99
+
 (version) 99?9?.99?9?.99?9?
+
 (RG brazilian document) 99.999.999-N

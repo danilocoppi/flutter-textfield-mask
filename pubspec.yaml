@@ -1,7 +1,7 @@
 name: easy_mask
-version: 0.0.4
+version: 1.0.0
 
-description: TextInputMask ready to be used just passing a String patterned parameter.
+description: Easy Mask for TextField using only a String as parameter. It controls user's cursor.
 homepage: https://github.com/danilocoppi/flutter-textfield-mask
 
 environment:

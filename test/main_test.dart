@@ -76,6 +76,6 @@ void main() async {
     var result = mm.executeMasking(basetest, 7, false, -1);
     print(result);
     expect(result['text'], '33 xy 999');
-    expect(result['selectionBase'], 6);
+    expect(result['selectionBase'], 5);
   });
 }

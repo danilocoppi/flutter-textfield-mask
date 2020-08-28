@@ -1,6 +1,10 @@
+## 1.0.2
+
+* `ReadMe` - Improved the Readme.
+
 ## 1.0.1
 
-* `Altered ReadME` - Added GIF sample result.
+* `Altered ReadMe` - Added GIF sample result.
 
 ## 1.0.0
 

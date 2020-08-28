@@ -5,6 +5,7 @@ Easy way to apply a mask to Flutter's TextFields.
 To use it, you only need to pass EasyMask on TextField's parameter inputFormatters.
 
 The Easy Mask cares about user's cursor position, to make fluid it's usability.
+![Sample](https://raw.githubusercontent.com/danilocoppi/flutter-textfield-mask/main/img/sample.gif)
 
 # Usage
 

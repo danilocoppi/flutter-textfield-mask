@@ -5,6 +5,7 @@ Easy way to apply a mask to Flutter's TextFields.
 To use it, you only need to pass EasyMask on TextField's parameter inputFormatters.
 
 The Easy Mask cares about user's cursor position, to make fluid it's usability.
+
 ![Sample](https://raw.githubusercontent.com/danilocoppi/flutter-textfield-mask/main/img/sample.gif)
 
 # Usage
@@ -35,16 +36,23 @@ import package:easy_mask/text_input_mask.dart
 
 ### Mask Patterns Characters
 
- 9 - is used to allow a number from 0-9
- A - is used to allow a letter from a-z or A-Z
- N - is used to allow a number or letter from 0-9, a-z or A-Z
- X - is used to allow any character
+ **9** - is used to allow a number from 0-9
 
- Those tokens 9,A,N and X can be followed by one following modifier
-? - indicates that is optional
-\+ - indicates that must have at least 1 or more repetitions
-\* - indicates that can have 0 or more repetitions
-\ - is used as scape
+ **A** - is used to allow a letter from a-z or A-Z
+
+ **N** - is used to allow a number or letter from 0-9, a-z or A-Z
+
+ **X** - is used to allow any character
+
+#### *Those tokens 9,A,N and X can be followed by one following modifier*
+
+ **?** - indicates that is optional
+
+ **\+** - indicates that must have at least 1 or more repetitions
+
+ **\*** - indicates that can have 0 or more repetitions
+
+ **\\** - is used as scape
 
 Any other letters will be displayed on masking.
 

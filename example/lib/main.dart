@@ -44,7 +44,11 @@ class MyHomePage extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(hintText: 'Brazilian CPF'),
                 inputFormatters: [
-                  TextInputMask(mask: '999.999.999-99', reverse: false)
+                  TextInputMask(
+                      mask: '999.999.999-99',
+                      placeholder: '_',
+                      maxPlaceHolders: 11,
+                      reverse: false)
                 ],
               ),
             ),
@@ -86,7 +90,11 @@ class MyHomePage extends StatelessWidget {
                 decoration: InputDecoration(hintText: 'Money'),
                 inputFormatters: [
                   TextInputMask(
-                      mask: '\$! !9+,999.99', placeholder: '0.00', reverse: true)
+                    mask: '\$! !9+,999.99',
+                    placeholder: '0',
+                    maxPlaceHolders: 3,
+                    reverse: true,
+                  )
                 ],
               ),
             )

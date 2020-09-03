@@ -10,13 +10,13 @@ class TextInputMask extends TextInputFormatter with MagicMask {
   String placeholder;
   bool reverse;
   int maxLength;
-  int maxPlaceHolderCharacters;
+  int maxPlaceHolders;
 
   /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.
   /// [maxLength] can be used to limit the maximum length. Leave it null or -1 to not limitate
   /// [placeholder] is a string to be applyed on untyped characters.
-  /// [maxPlaceHolderCharacters] max times a placeholder is counted. Typed characters consumes the counter.
+  /// [maxPlaceHolders] max times a placeholder is counted. Typed characters consumes the counter.
   /// ex placeholder as '0' with max=3 on a text like '3' with mask 9+.99 will be 0.03 not 000000.03
   ///
   /// The allowed patterns to it are:
@@ -39,7 +39,7 @@ class TextInputMask extends TextInputFormatter with MagicMask {
   ///
   /// \ - is used as scape
   ///
-  /// ** Any other character that is interpreted as letter to be printed, can be followed by modifier **
+  /// ** Any character that is interpreted as letter to be placed, can be followed by modifier **
   ///
   /// \! - Used to force print it, when it has at least 1 letter
   ///
@@ -50,7 +50,7 @@ class TextInputMask extends TextInputFormatter with MagicMask {
       this.reverse = false,
       this.maxLength = -1,
       this.placeholder = '',
-      this.maxPlaceHolderCharacters = -1}) {
+      this.maxPlaceHolders = -1}) {
     buildMaskTokens(mask);
   }
 
@@ -64,7 +64,7 @@ class TextInputMask extends TextInputFormatter with MagicMask {
           reverse,
           maxLength,
           placeholder,
-          maxPlaceHolderCharacters));
+          maxPlaceHolders));
     } catch (e) {
       print(e);
     }

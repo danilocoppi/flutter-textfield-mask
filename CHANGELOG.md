@@ -1,3 +1,9 @@
+## 1.1.0
+
+* `PlaceHolder` - Added support to placeholders.
+* `MultiMask` - Support multi masking, that changes based on length typed.
+* `Feature !` - Added the maker ! for force a char to be displayed on formatted text.
+
 ## 1.0.2
 
 * `ReadMe` - Improved the Readme.

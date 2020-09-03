@@ -1,3 +1,7 @@
+## 1.1.1
+
+* `Dartfmt` - Applying dart formats.
+
 ## 1.1.0
 
 * `PlaceHolder` - Added support to placeholders.

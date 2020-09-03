@@ -1,5 +1,5 @@
 name: easy_mask
-version: 1.1.0
+version: 1.1.1
 
 description: Easy and Powerful Mask for TextField using only a String as parameter. Has multi mask support, reverse mask for currency and placeholder. It controls user's cursor.
 homepage: https://github.com/danilocoppi/flutter-textfield-mask

@@ -6,13 +6,18 @@ import 'magic_mask.dart';
 /// TextInputMask extends the TextInputFormatter to make your life better!
 /// Just initiate it with the mask as string and it's done.
 class TextInputMask extends TextInputFormatter with MagicMask {
-  String mask;
+  dynamic mask;
+  String placeholder;
   bool reverse;
   int maxLength;
+  int maxPlaceHolderCharacters;
 
-  /// [mask] is the String to be used as mask.
+  /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.
   /// [maxLength] can be used to limit the maximum length. Leave it null or -1 to not limitate
+  /// [placeholder] is a string to be applyed on untyped characters.
+  /// [maxPlaceHolderCharacters] max times a placeholder is counted. Typed characters consumes the counter.
+  /// ex placeholder as '0' with max=3 on a text like '3' with mask 9+.99 will be 0.03 not 000000.03
   ///
   /// The allowed patterns to it are:
   ///
@@ -33,7 +38,19 @@ class TextInputMask extends TextInputFormatter with MagicMask {
   /// \* - indicates that can have 0 or more repetitions
   ///
   /// \ - is used as scape
-  TextInputMask({this.mask, this.reverse = false, this.maxLength = -1}) {
+  ///
+  /// ** Any other character that is interpreted as letter to be printed, can be followed by modifier **
+  ///
+  /// \! - Used to force print it, when it has at least 1 letter
+  ///
+  /// When passing an array of String as mask, the first mask applyed is the shortest going to longest.
+  /// It will apply the next mask (bigger one, only when the typed text overflow the previous mask)
+  TextInputMask(
+      {this.mask,
+      this.reverse = false,
+      this.maxLength = -1,
+      this.placeholder = '',
+      this.maxPlaceHolderCharacters = -1}) {
     buildMaskTokens(mask);
   }
 
@@ -42,7 +59,12 @@ class TextInputMask extends TextInputFormatter with MagicMask {
       TextEditingValue oldValue, TextEditingValue newValue) {
     try {
       return TextEditingValue.fromJSON(executeMasking(
-          newValue.text, newValue.selection.baseOffset, reverse, maxLength));
+          newValue.text,
+          newValue.selection.baseOffset,
+          reverse,
+          maxLength,
+          placeholder,
+          maxPlaceHolderCharacters));
     } catch (e) {
       print(e);
     }

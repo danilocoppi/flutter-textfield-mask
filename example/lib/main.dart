@@ -51,9 +51,42 @@ class MyHomePage extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 60),
               child: TextField(
+                decoration: InputDecoration(hintText: 'Multi Mask CPF/CNPJ'),
+                inputFormatters: [
+                  TextInputMask(
+                      mask: ['999.999.999-99', '99.999.999/9999-99'],
+                      reverse: false)
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Multi Mask Phone'),
+                inputFormatters: [
+                  TextInputMask(
+                      mask: ['(99) 9999 9999', '(99) 99999 9999'],
+                      reverse: false)
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Date'),
+                inputFormatters: [
+                  TextInputMask(mask: '99/99/9999', reverse: false)
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 120),
+              child: TextField(
+                textAlign: TextAlign.right,
                 decoration: InputDecoration(hintText: 'Money'),
                 inputFormatters: [
-                  TextInputMask(mask: '\$9+.99', reverse: true)
+                  TextInputMask(
+                      mask: '\$! !9+,999.99', placeholder: '0.00', reverse: true)
                 ],
               ),
             )

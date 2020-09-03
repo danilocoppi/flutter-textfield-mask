@@ -4,27 +4,35 @@ import 'dart:math';
 /// It should be used by TextInputMask, so you dont need to worry about it.
 /// If you want you can use it as String masker.
 class MagicMask {
-  static const String _type = 'type';
-  static const String _value = 'value';
+  static const String xxxtype = 'type';
+  static const String xxxvalue = 'value';
 
-  static const String _fixChar = 'fixedChar';
-  static const String _token = 'token';
-  static const String _tokenOpt = 'optionalToken';
-  static const String _multiple = 'multiple';
-  static const String _multipleOpt = 'multiple';
+  static const String xxxfixChar = 'fixedChar';
+  static const String xxxforcedChar = 'forcedChar';
+  static const String xxxtoken = 'token';
+  static const String xxxtokenOpt = 'optionalToken';
+  static const String xxxmultiple = 'multiple';
+  static const String xxxmultipleOpt = 'multiple';
 
-  bool _reverse;
-  int _charIndex;
-  int _tagIndex;
-  int _step;
-  int _charDeslocation;
-  int _cursorPosition;
-  String _maskedText;
-  String _extraChar;
+  bool xxxreverse;
+  bool xxxoverflow;
+  int xxxcharIndex;
+  int xxxtagIndex;
+  int xxxstep;
+  int xxxcharDeslocation;
+  int xxxcursorPosition;
+  String xxxplaceholder;
+  int xxxmaxPlaceHolderCharacters;
+  String xxxmaskedText;
+  String xxxextraChar;
+  int xxxtypedCharacter;
 
-  List<Map<String, String>> _tags = [];
+  List<Map<String, String>> xxxtags = [];
+  List<List<Map<String, String>>> xxxallTags = [];
+  int xxxcurTag = 0;
 
-  String _lastMaskType() => _tags?.last == null ? null : _tags.last[_type];
+  String xxxlastMaskType() =>
+      xxxtags?.last == null ? null : xxxtags.last[xxxtype];
 
   /// the BuildMaskTokens will transform the String pattern in tokens to be used as formatter.
   /// The [mask] should a String following the pattern:
@@ -46,27 +54,53 @@ class MagicMask {
   /// \* - indicates that can have 0 or more repetitions
   ///
   /// \ - is used as scape
-  void buildMaskTokens(String mask) {
+  void buildMaskTokens(dynamic masks) {
+    List<String> maskList = [];
+    if (masks is String) {
+      maskList.add(masks);
+    } else if (masks is List<String>) {
+      maskList = masks;
+    } else {
+      throw Exception('Unknown mask type');
+    }
+    xxxcurTag = 0;
+    for (var mask in maskList) {
+      xxxallTags.add([]);
+      xxxtags = xxxallTags[xxxcurTag];
+      xxxprocessMask(mask);
+      xxxcurTag += 1;
+    }
+
+    xxxallTags.sort((maskA, maskB) => maskA.length > maskB.length
+        ? 1
+        : maskA.length == maskB.length ? 0 : -1);
+  }
+
+  void xxxprocessMask(String mask) {
     for (var i = 0; i < mask.length; i++) {
       String currentChar = mask[i];
       if (currentChar == '\\') {
-        _tags.add({_type: _fixChar, _value: mask[i + 1]});
+        xxxtags.add({xxxtype: xxxfixChar, xxxvalue: mask[i + 1]});
       } else if (currentChar == '*') {
-        if (_lastMaskType() == _token) _tags.last[_type] = _multipleOpt;
+        if (xxxlastMaskType() == xxxtoken)
+          xxxtags.last[xxxtype] = xxxmultipleOpt;
       } else if (currentChar == '+') {
-        if (_lastMaskType() == _token) _tags.last[_type] = _multiple;
+        if (xxxlastMaskType() == xxxtoken) xxxtags.last[xxxtype] = xxxmultiple;
       } else if (currentChar == '?') {
-        if (_lastMaskType() == _token) _tags.last[_type] = _tokenOpt;
+        if (xxxlastMaskType() == xxxtoken) xxxtags.last[xxxtype] = xxxtokenOpt;
+      } else if (currentChar == '!') {
+        if (xxxlastMaskType() == xxxfixChar)
+          xxxtags.last[xxxtype] = xxxforcedChar;
       } else if (currentChar == '9') {
-        _tags.add({_type: _token, _value: '\\d'});
+        xxxtags.add({xxxtype: xxxtoken, xxxvalue: '\\d'});
       } else if (currentChar == 'A') {
-        _tags.add({_type: _token, _value: '[a-zA-z]'});
+        xxxtags.add({xxxtype: xxxtoken, xxxvalue: '[a-zA-z]'});
       } else if (currentChar == 'N') {
-        _tags.add({_type: _token, _value: '[a-zA-z0-9]'});
+        xxxtags.add({xxxtype: xxxtoken, xxxvalue: '[a-zA-z0-9]'});
       } else if (currentChar == 'X') {
-        _tags.add({_type: _token, _value: '.'});
+        xxxtags.add({xxxtype: xxxtoken, xxxvalue: '.'});
       } else {
-        _tags.add({_type: _fixChar, _value: currentChar});
+        xxxtags.add({xxxtype: xxxfixChar, xxxvalue: currentChar});
       }
     }
   }
@@ -75,6 +109,8 @@ class MagicMask {
   /// [cursorPosition] means the cursor position before masking.
   /// [reverse] is used to define the diretion mask will be applyed.
   /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limitate.
+  /// [placeholder] String to be applyed as placeholder
+  /// [maxPlaceHolderCharacters] Numbers of times the placeholder could be counted. A typed character consumes a count.
   ///
   /// It Return a JSON format to be used to create a TextEditingValue. Its format is:
   /// ```
@@ -86,139 +122,175 @@ class MagicMask {
   /// ```
   ///
   Map<String, dynamic> executeMasking(
-      String text, int cursorPosition, bool reverse, int maxLenght) {
-    if (text == null || text.isEmpty || _tags.length == 0)
-      return _buildResultJson('', 0, maxLenght);
+      String text,
+      int cursorPosition,
+      bool reverse,
+      int maxLenght,
+      String placeholder,
+      int maxPlaceHolderCharacters) {
+    if (text == null || text.isEmpty || xxxtags.length == 0)
+      return xxxbuildResultJson('', 0, maxLenght);
 
-    // Clear any possible readed attribute
-    for (Map<String, String> tag in _tags) tag['readed'] = '';
-    // Clear all variables
-    _reverse = reverse;
-    _cursorPosition = cursorPosition;
-    _charIndex = reverse ? text.length - 1 : 0;
-    _tagIndex = reverse ? _tags.length - 1 : 0;
-    _step = reverse ? -1 : 1;
-    _charDeslocation = 0;
-    _maskedText = '';
-    _extraChar = '';
+    xxxreverse = reverse;
+    xxxstep = xxxreverse ? -1 : 1;
+    xxxplaceholder = placeholder;
+    xxxmaxPlaceHolderCharacters = maxPlaceHolderCharacters;
+    List<Map<String, dynamic>> results = [];
+    for (var i = 0; i < xxxallTags.length; i++) {
+      xxxtags = xxxallTags[i];
+      xxxcursorPosition = cursorPosition;
+      xxxcharDeslocation = 0;
+      xxxtypedCharacter = 0;
+      xxxmaskedText = '';
+      xxxextraChar = '';
+      xxxoverflow = false;
+      xxxtagIndex = xxxreverse ? xxxtags.length - 1 : 0;
+      for (Map<String, String> tag in xxxtags) tag['readed'] = '';
 
-    String currentChar = text[_charIndex] ?? '';
-    while (currentChar.isNotEmpty) {
-      _applyTagMask(currentChar);
-      _charIndex += _step;
-      if (_charIndex < 0 || _charIndex >= text.length) break;
-      currentChar = text[_charIndex] ?? '';
+      String cleared = xxxclearMask(text);
+      if (cleared.isEmpty) return xxxbuildResultJson('', 0, maxLenght);
+      Map<String, dynamic> res = xxxproccessMask(cleared, maxLenght);
+      if (res['overflow'] == false) return res;
+      results.add(res);
     }
-
-    if (!_isNotLastMask(0)) {
-      _tagIndex += _step;
-      while (_tagIndex >= 0 && _tagIndex < _tags.length) {
-        var tag = _tags[_tagIndex];
-        _appendText(tag[_value]);
-        _incrementCharDeslocation(-_step);
-        _tagIndex += _step;
-      }
-    }
-
-    _cursorPosition =
-        min(_cursorPosition + _charDeslocation, _maskedText.length);
-    return _buildResultJson(_maskedText, _cursorPosition, maxLenght);
+    return results.last;
   }
 
-  void _applyTagMask(String char) {
-    if (_tagIndex < 0 || _tagIndex >= _tags.length) return;
-    var tag = _tags[_tagIndex];
-    String tagType = tag[_type];
-    String tagValue = tag[_value];
+  String xxxclearMask(String text) {
+    String cleared = text;
+    int tagIndex = xxxreverse ? xxxtags.length - 1 : 0;
+    while (tagIndex >= 0 && tagIndex < xxxtags.length) {
+      var tag = xxxtags[tagIndex];
+      if (tag[xxxtype] == xxxforcedChar || tag[xxxtype] == xxxfixChar) {
+        int pos = xxxreverse
+            ? cleared.lastIndexOf(tag[xxxvalue])
+            : cleared.indexOf(tag[xxxvalue]);
+        if (pos != -1) {
+          if (pos < xxxcursorPosition) {
+            xxxcursorPosition -= 1;
+          }
+          cleared = '${cleared.substring(0, pos)}${cleared.substring(pos + 1)}';
+        }
+      }
+      tagIndex += xxxstep;
+    }
+    return cleared;
+  }
+
+  Map<String, dynamic> xxxproccessMask(String text, int maxLenght) {
+    xxxcharIndex = xxxreverse ? text.length - 1 : 0;
+    String currentChar = text[xxxcharIndex] ?? '';
+    while (currentChar.isNotEmpty) {
+      xxxapplyTagMask(currentChar);
+      xxxcharIndex += xxxstep;
+      if (xxxcharIndex < 0 || xxxcharIndex >= text.length) break;
+      currentChar = text[xxxcharIndex] ?? '';
+    }
+
+    while (xxxtagIndex >= 0 && xxxtagIndex < xxxtags.length) {
+      xxxextraChar = '';
+      var tag = xxxtags[xxxtagIndex];
+      if (tag[xxxtype] == xxxforcedChar) {
+        xxxappendText(tag[xxxvalue]);
+        xxxincrementCharDeslocation(-xxxstep);
+      }
+      xxxtagIndex += xxxstep;
+    }
+
+    xxxcursorPosition =
+        min(xxxcursorPosition + xxxcharDeslocation, xxxmaskedText.length);
+    return xxxbuildResultJson(xxxmaskedText, xxxcursorPosition, maxLenght);
+  }
+
+  void xxxapplyTagMask(String char) {
+    if (xxxtagIndex < 0 || xxxtagIndex >= xxxtags.length) {
+      xxxoverflow = true;
+      return;
+    }
+    var tag = xxxtags[xxxtagIndex];
+    String tagType = tag[xxxtype];
+    String tagValue = tag[xxxvalue];
 
     switch (tagType) {
-      case _fixChar:
-        // _appendText(tagValue);
-        _appendExtraChar(tagValue);
-
-        _tagIndex += _step;
-        // incrementCharDeslocation(1);
-        _applyTagMask(char);
+      case xxxfixChar:
+        xxxappendExtraChar(tagValue);
+        xxxtagIndex += xxxstep;
+        xxxapplyTagMask(char);
         break;
-      case _token:
-        if (_match(tagValue, char)) {
-          _appendText(char);
-          _tagIndex += _step;
+      case xxxforcedChar:
+        xxxappendText(tagValue);
+        xxxincrementCharDeslocation(1);
+        xxxtagIndex += xxxstep;
+        xxxapplyTagMask(char);
+        break;
+      case xxxtoken:
+        if (xxxmatch(tagValue, char)) {
+          xxxappendText(char);
+          xxxtypedCharacter += 1;
+          xxxtagIndex += xxxstep;
         } else {
-          _incrementCharDeslocation(-1);
+          xxxincrementCharDeslocation(-1);
         }
         break;
-      case _tokenOpt:
-        if (_match(tagValue, char)) {
-          _appendText(char);
-          _tagIndex += _step;
+      case xxxtokenOpt:
+        if (xxxmatch(tagValue, char)) {
+          xxxappendText(char);
+          xxxtypedCharacter += 1;
+          xxxtagIndex += xxxstep;
         } else {
-          _tagIndex += _step;
-          _applyTagMask(char);
+          xxxtagIndex += xxxstep;
+          xxxapplyTagMask(char);
         }
         break;
-      case _multiple:
-        if (_match(tagValue, char)) {
-          _appendText(char);
+      case xxxmultiple:
+        if (xxxmatch(tagValue, char)) {
+          xxxappendText(char);
+          xxxtypedCharacter += 1;
           tag['readed'] = '1';
-        } else if (tag['readed'].isNotEmpty && _isNotLastMask(0)) {
-          _tagIndex += _step;
-          _applyTagMask(char);
+        } else if (tag['readed'].isNotEmpty) {
+          xxxtagIndex += xxxstep;
+          xxxapplyTagMask(char);
         } else {
-          _incrementCharDeslocation(-1);
+          xxxincrementCharDeslocation(-1);
         }
         break;
-      case _multipleOpt:
-        if (_match(tagValue, char)) {
-          _appendText(char);
-        } else if (_isNotLastMask(0)) {
-          _tagIndex += _step;
-          _applyTagMask(char);
+      case xxxmultipleOpt:
+        if (xxxmatch(tagValue, char)) {
+          xxxappendText(char);
+          xxxtypedCharacter += 1;
         } else {
-          _incrementCharDeslocation(-1);
-        }
+          xxxtagIndex += xxxstep;
+          xxxapplyTagMask(char);
+        } 
         break;
       default:
-        _incrementCharDeslocation(-1);
+        xxxincrementCharDeslocation(-1);
     }
   }
 
-  bool _isNotLastMask(int baseStep) {
-    if (_tagIndex + _step + baseStep >= 0 &&
-        _tagIndex + _step + baseStep < _tags.length) {
-      var tag = _tags[_tagIndex + _step + baseStep];
-      if (tag[_type] != _fixChar) {
-        return true;
-      } else {
-        return _isNotLastMask(baseStep + _step);
-      }
-    } else {
-      return false;
-    }
+  void xxxincrementCharDeslocation(int step) {
+    if (xxxcharIndex <= xxxcursorPosition - 1) xxxcharDeslocation += step;
   }
 
-  void _incrementCharDeslocation(int step) {
-    if (_charIndex <= _cursorPosition - 1) _charDeslocation += step;
+  bool xxxmatch(String tagValue, String char) =>
+      RegExp(tagValue).hasMatch(char);
+
+  void xxxappendText(String char) {
+    xxxmaskedText = xxxreverse
+        ? '$char$xxxextraChar$xxxmaskedText'
+        : '$xxxmaskedText$xxxextraChar$char';
+    xxxincrementCharDeslocation(xxxextraChar.length);
+    xxxextraChar = '';
   }
 
-  bool _match(String tagValue, String char) => RegExp(tagValue).hasMatch(char);
-
-  void _appendText(String char) {
-    _maskedText = _reverse
-        ? '$char$_extraChar$_maskedText'
-        : '$_maskedText$_extraChar$char';
-    _incrementCharDeslocation(_extraChar.length);
-    _extraChar = '';
+  void xxxappendExtraChar(String extra) {
+    xxxextraChar = xxxreverse ? '$extra$xxxextraChar' : '$xxxextraChar$extra';
   }
 
-  void _appendExtraChar(String extra) {
-    _extraChar = _reverse ? '$extra$_extraChar' : '$_extraChar$extra';
-  }
-
-  Map<String, dynamic> _buildResultJson(
+  Map<String, dynamic> xxxbuildResultJson(
       String text, int cursorPos, int maxLengh) {
     if (maxLengh > 0) {
-      if (_reverse) {
+      if (xxxreverse) {
         text = text.substring(max(0, text.length - maxLengh));
       } else {
         text = text.substring(0, maxLengh);
@@ -226,8 +298,9 @@ class MagicMask {
     }
     return <String, dynamic>{
       "text": text,
-      "selectionBase": cursorPos,
-      "selectionExtent": cursorPos
+      "selectionBase": max(0, cursorPos),
+      "selectionExtent": max(0, cursorPos),
+      "overflow": xxxoverflow
     };
   }
 }

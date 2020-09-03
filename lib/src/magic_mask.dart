@@ -31,8 +31,7 @@ class MagicMask {
   List<List<Map<String, String>>> _allTags = [];
   int _curTag = 0;
 
-  String _lastMaskType() =>
-      _tags?.last == null ? null : _tags.last[_type];
+  String _lastMaskType() => _tags?.last == null ? null : _tags.last[_type];
 
   /// the BuildMaskTokens will transform the String pattern in tokens to be used as formatter.
   /// The [mask] should a String following the pattern:
@@ -54,7 +53,7 @@ class MagicMask {
   /// \* - indicates that can have 0 or more repetitions (use as last character)
   ///
   /// \ - is used as scape
-  /// 
+  ///
   ///
   /// ** Any character that is interpreted as letter to be placed, can be followed by modifier **
   ///
@@ -87,15 +86,13 @@ class MagicMask {
       if (currentChar == '\\') {
         _tags.add({_type: _fixChar, _value: mask[i + 1]});
       } else if (currentChar == '*') {
-        if (_lastMaskType() == _token)
-          _tags.last[_type] = _multipleOpt;
+        if (_lastMaskType() == _token) _tags.last[_type] = _multipleOpt;
       } else if (currentChar == '+') {
         if (_lastMaskType() == _token) _tags.last[_type] = _multiple;
       } else if (currentChar == '?') {
         if (_lastMaskType() == _token) _tags.last[_type] = _tokenOpt;
       } else if (currentChar == '!') {
-        if (_lastMaskType() == _fixChar)
-          _tags.last[_type] = _forcedChar;
+        if (_lastMaskType() == _fixChar) _tags.last[_type] = _forcedChar;
       } else if (currentChar == '9') {
         _tags.add({_type: _token, _value: '\\d'});
       } else if (currentChar == 'A') {
@@ -165,8 +162,7 @@ class MagicMask {
   String _clearPlaceHolder(String text) {
     int index = _reverse ? 0 : text.length - 1;
     while (index >= 0 && index < text.length && text[index] == _placeholder) {
-      text =
-          _reverse ? text.substring(1) : text.substring(0, text.length - 1);
+      text = _reverse ? text.substring(1) : text.substring(0, text.length - 1);
       index -= _step;
     }
     return text;
@@ -296,8 +292,7 @@ class MagicMask {
     if (_charIndex <= _cursorPosition - 1) _charDeslocation += step;
   }
 
-  bool _match(String tagValue, String char) =>
-      RegExp(tagValue).hasMatch(char);
+  bool _match(String tagValue, String char) => RegExp(tagValue).hasMatch(char);
 
   void _appendText(String char) {
     _maskedText = _reverse

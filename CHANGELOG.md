@@ -1,3 +1,7 @@
+## 1.1.3
+
+* `Fix Readme` - Fixed Readme problem
+
 ## 1.1.2
 
 * `String Format` - Added easy way to format strings using it.

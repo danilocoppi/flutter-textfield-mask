@@ -41,6 +41,7 @@ import package:easy_mask/text_input_mask.dart
   MagicMask mask = MagicMask.buildMask('\\+99 (99) 99999-9999');
   String formattedString = mask.getMaskedString(text);
 ...
+```
 
 ### **Multi Mask Sample**
 

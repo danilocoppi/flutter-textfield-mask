@@ -1,3 +1,7 @@
+## 1.1.2
+
+* `String Format` - Added easy way to format strings using it.
+
 ## 1.1.1
 
 * `Dartfmt` - Applying dart formats.

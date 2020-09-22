@@ -78,4 +78,11 @@ void main() async {
     expect(result['text'], '33 xy 999');
     expect(result['selectionBase'], 5);
   });
+
+  test('Simple text', () {
+    String text = '432516565';
+    MagicMask mask = MagicMask.buildMask('\\+99 (99) 99999-9999');
+    var res = mask.getMaskedString(text);
+    print(res);
+  });
 }

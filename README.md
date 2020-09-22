@@ -1,6 +1,6 @@
 # Easy Mask
 
-Easy way to apply a mask to Flutter's TextFields.
+Easy way to apply a mask to Flutter's TextFields and on Strings
 
 To use it, you only need to pass EasyMask on TextField's parameter inputFormatters.
 
@@ -31,6 +31,16 @@ import package:easy_mask/text_input_mask.dart
   )
 ...
 ```
+
+Formatting a String
+
+``` dart
+import package:easy_mask/text_input_mask.dart
+...
+  String text = '432516565';
+  MagicMask mask = MagicMask.buildMask('\\+99 (99) 99999-9999');
+  String formattedString = mask.getMaskedString(text);
+...
 
 ### **Multi Mask Sample**
 

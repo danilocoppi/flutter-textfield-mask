@@ -5,12 +5,13 @@ import 'magic_mask.dart';
 
 /// TextInputMask extends the TextInputFormatter to make your life better!
 /// Just initiate it with the mask as string and it's done.
-class TextInputMask extends TextInputFormatter with MagicMask {
+class TextInputMask extends TextInputFormatter {
   dynamic mask;
   String placeholder;
   bool reverse;
   int maxLength;
   int maxPlaceHolders;
+  MagicMask magickMask;
 
   /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.
@@ -51,14 +52,14 @@ class TextInputMask extends TextInputFormatter with MagicMask {
       this.maxLength = -1,
       this.placeholder = '',
       this.maxPlaceHolders = -1}) {
-    buildMaskTokens(mask);
+    magickMask = MagicMask.buildMask(mask);
   }
 
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     try {
-      return TextEditingValue.fromJSON(executeMasking(
+      return TextEditingValue.fromJSON(magickMask.executeMasking(
           newValue.text,
           newValue.selection.baseOffset,
           reverse,

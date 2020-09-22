@@ -31,6 +31,12 @@ class MagicMask {
   List<List<Map<String, String>>> _allTags = [];
   int _curTag = 0;
 
+  MagicMask();
+
+  MagicMask.buildMask(String mask) {
+    if (mask != null) this.buildMaskTokens(mask);
+  }
+
   String _lastMaskType() => _tags?.last == null ? null : _tags.last[_type];
 
   /// the BuildMaskTokens will transform the String pattern in tokens to be used as formatter.
@@ -105,6 +111,15 @@ class MagicMask {
         _tags.add({_type: _fixChar, _value: currentChar});
       }
     }
+  }
+
+  String getMaskedString(String text) =>
+      getAdvancedMaskedStrign(text, -1, '', 0);
+
+  String getAdvancedMaskedStrign(String text, int maxLenght, String placeholder,
+      int maxPlaceHolderCharacters) {
+    return executeMasking(text, 0, false, maxLenght, placeholder,
+        maxPlaceHolderCharacters)['text'];
   }
 
   /// [text] is the mask to be formatter on mask.

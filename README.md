@@ -92,12 +92,11 @@ import package:easy_mask/text_input_mask.dart
 
 ### Possible parameters
 
-* **mask** can be a String or an List<Strign> with the wanted masks pattern.
+* **mask** can be a String or an List<String> with the wanted masks pattern.
 * **reverse** is a boolean that indicates if the user will type from right to left. Used normally on currency TextFields.
 * **maxLength** is an Integer that limits the maximum size of returned masked text.  
 * **placeholder** is a String character to be used as placeholder on untyped characters. Must define maxPlaceHolders
 * **maxPlaceHolders** an integer to map how many possible places it would be placed. Typed characters consumes a position from this counter.
-
 
 ### Mask Patterns Characters
 

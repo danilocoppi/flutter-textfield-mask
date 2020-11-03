@@ -33,7 +33,7 @@ class MagicMask {
 
   MagicMask();
 
-  MagicMask.buildMask(String mask) {
+  MagicMask.buildMask(dynamic mask) {
     if (mask != null) this.buildMaskTokens(mask);
   }
 

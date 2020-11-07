@@ -83,7 +83,9 @@ class MagicMask {
 
     _allTags.sort((maskA, maskB) => maskA.length > maskB.length
         ? 1
-        : maskA.length == maskB.length ? 0 : -1);
+        : maskA.length == maskB.length
+            ? 0
+            : -1);
   }
 
   void _processMask(String mask) {
@@ -122,7 +124,7 @@ class MagicMask {
   /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limitate.
   /// [placeholder] String character to be applyed as placeholder
   /// [maxPlaceHolderCharacters] Numbers of times the placeholder could be counted. A typed character consumes a count.
-  /// 
+  ///
   /// It returns a formatted String.
   String getAdvancedMaskedStrign(String text, int maxLenght, String placeholder,
       int maxPlaceHolderCharacters) {

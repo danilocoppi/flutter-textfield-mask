@@ -1,3 +1,7 @@
+## 1.1.4
+
+* `Fix Method Signature` - Fix wrong method signature, that was throwing an exception when using list of masks (Fixed by DeveJonatas)
+
 ## 1.1.3
 
 * `Fix Readme` - Fixed Readme problem

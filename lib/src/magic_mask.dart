@@ -118,7 +118,7 @@ class MagicMask {
   /// [text] is the string to be formatted
   /// It returns a formatted String.
   String getMaskedString(String text) =>
-      getAdvancedMaskedStrign(text, -1, '', 0);
+      getAdvancedMaskedString(text, -1, '', 0);
 
   /// [text] is the string to be formatted
   /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limitate.
@@ -126,7 +126,7 @@ class MagicMask {
   /// [maxPlaceHolderCharacters] Numbers of times the placeholder could be counted. A typed character consumes a count.
   ///
   /// It returns a formatted String.
-  String getAdvancedMaskedStrign(String text, int maxLenght, String placeholder,
+  String getAdvancedMaskedString(String text, int maxLenght, String placeholder,
       int maxPlaceHolderCharacters) {
     return executeMasking(text, 0, false, maxLenght, placeholder,
         maxPlaceHolderCharacters)['text'];
@@ -185,12 +185,14 @@ class MagicMask {
   }
 
   String _clearPlaceHolder(String text) {
+    String cleared = text;
     int index = _reverse ? 0 : text.length - 1;
     while (index >= 0 && index < text.length && text[index] == _placeholder) {
-      text = _reverse ? text.substring(1) : text.substring(0, text.length - 1);
+      cleared =
+          _reverse ? text.substring(1) : text.substring(0, text.length - 1);
       index -= _step;
     }
-    return text;
+    return cleared;
   }
 
   String _clearMask(String text) {

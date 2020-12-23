@@ -11,7 +11,7 @@ class TextInputMask extends TextInputFormatter {
   bool reverse;
   int maxLength;
   int maxPlaceHolders;
-  MagicMask magickMask;
+  MagicMask magicMask;
 
   /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.
@@ -52,14 +52,14 @@ class TextInputMask extends TextInputFormatter {
       this.maxLength = -1,
       this.placeholder = '',
       this.maxPlaceHolders = -1}) {
-    magickMask = MagicMask.buildMask(mask);
+    magicMask = MagicMask.buildMask(mask);
   }
 
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     try {
-      return TextEditingValue.fromJSON(magickMask.executeMasking(
+      return TextEditingValue.fromJSON(magicMask.executeMasking(
           newValue.text,
           newValue.selection.baseOffset,
           reverse,

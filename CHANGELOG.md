@@ -1,3 +1,7 @@
+## 1.1.5
+
+* `Fix problems with stuck characters` - Fix the problem with amount inverted mask with placeholders that wasn't working properly
+
 ## 1.1.4
 
 * `Fix Method Signature` - Fix wrong method signature, that was throwing an exception when using list of masks (Fixed by DeveJonatas)

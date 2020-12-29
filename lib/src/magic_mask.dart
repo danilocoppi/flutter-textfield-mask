@@ -157,7 +157,6 @@ class MagicMask {
       int maxPlaceHolderCharacters) {
     if (text == null || text.isEmpty || _tags.length == 0)
       return _buildResultJson('', 0, maxLenght);
-
     _reverse = reverse;
     _step = _reverse ? -1 : 1;
     _placeholder = placeholder;
@@ -174,7 +173,7 @@ class MagicMask {
       _tagIndex = _reverse ? _tags.length - 1 : 0;
       for (Map<String, String> tag in _tags) tag['readed'] = '';
 
-      String cleared = _clearMask(text);
+      String cleared = clearMask(text);
       cleared = _clearPlaceHolder(cleared);
       if (cleared.isEmpty) return _buildResultJson('', 0, maxLenght);
       Map<String, dynamic> res = _proccessMask(cleared, maxLenght);
@@ -195,7 +194,11 @@ class MagicMask {
     return cleared;
   }
 
-  String _clearMask(String text) {
+  /// [text] is the text with mask that should be cleared.
+  ///
+  /// It Return a String without the mask:
+  ///
+  String clearMask(String text) {
     String cleared = text;
     int tagIndex = _reverse ? _tags.length - 1 : 0;
     while (tagIndex >= 0 && tagIndex < _tags.length) {
@@ -209,6 +212,8 @@ class MagicMask {
             _cursorPosition -= 1;
           }
           cleared = '${cleared.substring(0, pos)}${cleared.substring(pos + 1)}';
+        } else {
+          break;
         }
       }
       tagIndex += _step;

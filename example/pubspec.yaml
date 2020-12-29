@@ -11,7 +11,9 @@ environment:
 
 dependencies:
   cupertino_icons: ^0.1.3
-  easy_mask: ^1.1.2
+  easy_mask: ^1.1.4
+  # easy_mask:
+  #     path: ../
   flutter:
     sdk: flutter
 

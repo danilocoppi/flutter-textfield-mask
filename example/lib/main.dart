@@ -84,13 +84,22 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Brazilian Phone'),
+                inputFormatters: [
+                  TextInputMask(mask: '\\+5!5! (!99) 99999-9999')
+                ],
+              ),
+            ),
+            Container(
               padding: EdgeInsets.symmetric(horizontal: 120),
               child: TextField(
                 textAlign: TextAlign.right,
                 decoration: InputDecoration(hintText: 'Money'),
                 inputFormatters: [
                   TextInputMask(
-                    mask: '\$! !9+,999.99',
+                    mask: '\$! !9+,99',
                     placeholder: '0',
                     maxPlaceHolders: 3,
                     reverse: true,

@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Migrate to null safety
+
 ## 1.1.5
 
 * `Fix problems with stuck characters` - Fix the problem with amount inverted mask with placeholders that wasn't working properly

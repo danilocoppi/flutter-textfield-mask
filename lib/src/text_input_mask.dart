@@ -11,7 +11,7 @@ class TextInputMask extends TextInputFormatter {
   bool reverse;
   int maxLength;
   int maxPlaceHolders;
-  MagicMask magicMask;
+  late MagicMask magicMask;
 
   /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.

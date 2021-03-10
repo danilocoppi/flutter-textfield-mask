@@ -14,18 +14,18 @@ class MagicMask {
   static const String _multiple = 'multiple';
   static const String _multipleOpt = 'multiple';
 
-  bool _reverse;
-  bool _overflow;
-  int _charIndex;
-  int _tagIndex;
-  int _step;
-  int _charDeslocation;
-  int _cursorPosition;
-  String _placeholder;
-  int _maxPlaceHolderCharacters;
-  String _maskedText;
-  String _extraChar;
-  int _typedCharacter;
+  late bool _reverse;
+  late bool _overflow;
+  late int _charIndex;
+  late int _tagIndex;
+  late int _step;
+  late int _charDeslocation;
+  late int _cursorPosition;
+  late String _placeholder;
+  late int _maxPlaceHolderCharacters;
+  late String _maskedText;
+  late String _extraChar;
+  late int _typedCharacter;
 
   List<Map<String, String>> _tags = [];
   List<List<Map<String, String>>> _allTags = [];
@@ -37,7 +37,7 @@ class MagicMask {
     if (mask != null) this.buildMaskTokens(mask);
   }
 
-  String _lastMaskType() => _tags?.last == null ? null : _tags.last[_type];
+  String? _lastMaskType() => _tags.last[_type];
 
   /// the BuildMaskTokens will transform the String pattern in tokens to be used as formatter.
   /// The [mask] should a String following the pattern:
@@ -149,7 +149,7 @@ class MagicMask {
   /// ```
   ///
   Map<String, dynamic> executeMasking(
-      String text,
+      String? text,
       int cursorPosition,
       bool reverse,
       int maxLenght,
@@ -205,8 +205,8 @@ class MagicMask {
       var tag = _tags[tagIndex];
       if (tag[_type] == _forcedChar || tag[_type] == _fixChar) {
         int pos = _reverse
-            ? cleared.lastIndexOf(tag[_value])
-            : cleared.indexOf(tag[_value]);
+            ? cleared.lastIndexOf(tag[_value]!)
+            : cleared.indexOf(tag[_value]!);
         if (pos != -1) {
           if (pos < _cursorPosition) {
             _cursorPosition -= 1;
@@ -223,12 +223,12 @@ class MagicMask {
 
   Map<String, dynamic> _proccessMask(String text, int maxLenght) {
     _charIndex = _reverse ? text.length - 1 : 0;
-    String currentChar = text[_charIndex] ?? '';
+    String currentChar = text[_charIndex];
     while (currentChar.isNotEmpty) {
       _applyTagMask(currentChar, false);
       _charIndex += _step;
       if (_charIndex < 0 || _charIndex >= text.length) break;
-      currentChar = text[_charIndex] ?? '';
+      currentChar = text[_charIndex];
     }
 
     int placeHolderCounter = _maxPlaceHolderCharacters - _typedCharacter;
@@ -243,7 +243,7 @@ class MagicMask {
       _extraChar = '';
       var tag = _tags[_tagIndex];
       if (tag[_type] == _forcedChar) {
-        _appendText(tag[_value]);
+        _appendText(tag[_value]!);
         _incrementCharDeslocation(-_step);
       }
       _tagIndex += _step;
@@ -260,8 +260,8 @@ class MagicMask {
       return;
     }
     var tag = _tags[_tagIndex];
-    String tagType = tag[_type];
-    String tagValue = tag[_value];
+    String tagType = tag[_type]!;
+    String tagValue = tag[_value]!;
 
     switch (tagType) {
       case _fixChar:
@@ -299,7 +299,7 @@ class MagicMask {
           _appendText(char);
           _typedCharacter += 1;
           tag['readed'] = '1';
-        } else if (tag['readed'].isNotEmpty) {
+        } else if (tag['readed']!.isNotEmpty) {
           _tagIndex += _step;
           _applyTagMask(char, isPlaceHolder);
         } else {

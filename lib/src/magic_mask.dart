@@ -15,7 +15,7 @@ class MagicMask {
   static const String _multipleOpt = 'multiple';
 
   late bool _reverse;
-  late bool _overflow;
+  bool _overflow = false;
   late int _charIndex;
   late int _tagIndex;
   late int _step;

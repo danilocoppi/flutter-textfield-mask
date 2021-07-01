@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Fixed _overflow has not been initialized
+
 ## 2.0.0
 
 * Migrate to null safety

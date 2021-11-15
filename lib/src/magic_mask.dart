@@ -1,7 +1,7 @@
 import 'dart:math';
 
-/// This class is used to make all hardwork of making and controll the users cursor.
-/// It should be used by TextInputMask, so you dont need to worry about it.
+/// This class is used to make all hardwork of making and control the users cursor.
+/// It should be used by TextInputMask, so you don't need to worry about it.
 /// If you want you can use it as String masker.
 class MagicMask {
   static const String _type = 'type';
@@ -12,7 +12,7 @@ class MagicMask {
   static const String _token = 'token';
   static const String _tokenOpt = 'optionalToken';
   static const String _multiple = 'multiple';
-  static const String _multipleOpt = 'multiple';
+  static const String _multipleOpt = 'multipleOpt';
 
   late bool _reverse;
   bool _overflow = false;
@@ -28,13 +28,13 @@ class MagicMask {
   late int _typedCharacter;
 
   List<Map<String, String>> _tags = [];
-  List<List<Map<String, String>>> _allTags = [];
+  final List<List<Map<String, String>>> _allTags = [];
   int _curTag = 0;
 
   MagicMask();
 
   MagicMask.buildMask(dynamic mask) {
-    if (mask != null) this.buildMaskTokens(mask);
+    if (mask != null) buildMaskTokens(mask);
   }
 
   String? _lastMaskType() => _tags.last[_type];
@@ -81,11 +81,13 @@ class MagicMask {
       _curTag += 1;
     }
 
-    _allTags.sort((maskA, maskB) => maskA.length > maskB.length
-        ? 1
-        : maskA.length == maskB.length
-            ? 0
-            : -1);
+    _allTags.sort(
+      (maskA, maskB) => maskA.length > maskB.length
+          ? 1
+          : maskA.length == maskB.length
+              ? 0
+              : -1,
+    );
   }
 
   void _processMask(String mask) {
@@ -121,22 +123,32 @@ class MagicMask {
       getAdvancedMaskedString(text, -1, '', 0);
 
   /// [text] is the string to be formatted
-  /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limitate.
-  /// [placeholder] String character to be applyed as placeholder
+  /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limited.
+  /// [placeholder] String character to be applied as placeholder
   /// [maxPlaceHolderCharacters] Numbers of times the placeholder could be counted. A typed character consumes a count.
   ///
   /// It returns a formatted String.
-  String getAdvancedMaskedString(String text, int maxLenght, String placeholder,
-      int maxPlaceHolderCharacters) {
-    return executeMasking(text, 0, false, maxLenght, placeholder,
-        maxPlaceHolderCharacters)['text'];
+  String getAdvancedMaskedString(
+    String text,
+    int maxLenght,
+    String placeholder,
+    int maxPlaceHolderCharacters,
+  ) {
+    return executeMasking(
+      text,
+      0,
+      false,
+      maxLenght,
+      placeholder,
+      maxPlaceHolderCharacters,
+    )['text'];
   }
 
   /// [text] is the mask to be formatter on mask.
   /// [cursorPosition] means the cursor position before masking.
-  /// [reverse] is used to define the diretion mask will be applyed.
-  /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limitate.
-  /// [placeholder] String character to be applyed as placeholder
+  /// [reverse] is used to define the direction mask will be applied.
+  /// [maxLenght] is used to limit the maximum returned text. Set it as -1 to not limited.
+  /// [placeholder] String character to be applied as placeholder
   /// [maxPlaceHolderCharacters] Numbers of times the placeholder could be counted. A typed character consumes a count.
   ///
   /// It Return a JSON format to be used to create a TextEditingValue. Its format is:
@@ -155,8 +167,9 @@ class MagicMask {
       int maxLenght,
       String placeholder,
       int maxPlaceHolderCharacters) {
-    if (text == null || text.isEmpty || _tags.length == 0)
+    if (text == null || text.isEmpty || _tags.isEmpty) {
       return _buildResultJson('', 0, maxLenght);
+    }
     _reverse = reverse;
     _step = _reverse ? -1 : 1;
     _placeholder = placeholder;
@@ -171,7 +184,9 @@ class MagicMask {
       _extraChar = '';
       _overflow = false;
       _tagIndex = _reverse ? _tags.length - 1 : 0;
-      for (Map<String, String> tag in _tags) tag['readed'] = '';
+      for (Map<String, String> tag in _tags) {
+        tag['readed'] = '';
+      }
 
       String cleared = clearMask(text);
       cleared = _clearPlaceHolder(cleared);

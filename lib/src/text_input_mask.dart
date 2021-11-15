@@ -15,8 +15,8 @@ class TextInputMask extends TextInputFormatter {
 
   /// [mask] is the String or Array of Strings to be used as mask(s).
   /// [reverse] is a bool. When true it will mask on reverse mode, usually to be used on currency fields.
-  /// [maxLength] can be used to limit the maximum length. Leave it null or -1 to not limitate
-  /// [placeholder] is a string to be applyed on untyped characters.
+  /// [maxLength] can be used to limit the maximum length. Leave it null or -1 to not limited
+  /// [placeholder] is a string to be applied on untyped characters.
   /// [maxPlaceHolders] max times a placeholder is counted. Typed characters consumes the counter.
   /// ex placeholder as '0' with max=3 on a text like '3' with mask 9+.99 will be 0.03 not 000000.03
   ///
@@ -44,7 +44,7 @@ class TextInputMask extends TextInputFormatter {
   ///
   /// \! - Used to force print it, when it has at least 1 letter
   ///
-  /// When passing an array of String as mask, the first mask applyed is the shortest going to longest.
+  /// When passing an array of String as mask, the first mask applied is the shortest going to longest.
   /// It will apply the next mask (bigger one, only when the typed text overflow the previous mask)
   TextInputMask(
       {this.mask,
@@ -59,13 +59,16 @@ class TextInputMask extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     try {
-      return TextEditingValue.fromJSON(magicMask.executeMasking(
+      return TextEditingValue.fromJSON(
+        magicMask.executeMasking(
           newValue.text,
           newValue.selection.baseOffset,
           reverse,
           maxLength,
           placeholder,
-          maxPlaceHolders));
+          maxPlaceHolders,
+        ),
+      );
     } catch (e) {
       print(e);
     }

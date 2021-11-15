@@ -45,10 +45,11 @@ class MyHomePage extends StatelessWidget {
                 decoration: InputDecoration(hintText: 'Brazilian CPF'),
                 inputFormatters: [
                   TextInputMask(
-                      mask: '999.999.999-99',
-                      placeholder: '_',
-                      maxPlaceHolders: 11,
-                      reverse: false)
+                    mask: '999.999.999-99',
+                    placeholder: '_',
+                    maxPlaceHolders: 11,
+                    reverse: false,
+                  )
                 ],
               ),
             ),
@@ -69,8 +70,9 @@ class MyHomePage extends StatelessWidget {
                 decoration: InputDecoration(hintText: 'Multi Mask Phone'),
                 inputFormatters: [
                   TextInputMask(
-                      mask: ['(99) 9999 9999', '(99) 99999 9999'],
-                      reverse: false)
+                    mask: ['(99) 9999 9999', '(99) 99999 9999'],
+                    reverse: false,
+                  )
                 ],
               ),
             ),

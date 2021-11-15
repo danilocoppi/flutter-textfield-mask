@@ -95,6 +95,7 @@ class MagicMask {
       String currentChar = mask[i];
       if (currentChar == '\\') {
         _tags.add({_type: _fixChar, _value: mask[i + 1]});
+        i++;
       } else if (currentChar == '*') {
         if (_lastMaskType() == _token) _tags.last[_type] = _multipleOpt;
       } else if (currentChar == '+') {

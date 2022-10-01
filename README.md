@@ -16,12 +16,12 @@ Supports Placeholders.
 
 ### **Simplest Sample**
 
-`Import package:easy_mask/text_input_mask.dart`
+`import 'package:easy_mask/easy_mask.dart';`
 
 Then instantiate `TextInputMask` passing at least a String `mask` parameter.
 
 ``` dart
-import package:easy_mask/text_input_mask.dart
+import 'package:easy_mask/easy_mask.dart';
 ...
   TextField(
     inputFormatters: [ TextInputMask(mask: '99? (99) 999 99-99') ],
@@ -35,7 +35,7 @@ import package:easy_mask/text_input_mask.dart
 Formatting a String
 
 ``` dart
-import package:easy_mask/text_input_mask.dart
+import 'package:easy_mask/easy_mask.dart';
 ...
   String text = '432516565';
   MagicMask mask = MagicMask.buildMask('\\+99 (99) 99999-9999');
@@ -45,12 +45,12 @@ import package:easy_mask/text_input_mask.dart
 
 ### **Multi Mask Sample**
 
-`Import package:easy_mask/text_input_mask.dart`
+`import 'package:easy_mask/easy_mask.dart';`
 
 Then instantiate `TextInputMask` passing at least a String `mask` parameter.
 
 ``` dart
-import package:easy_mask/text_input_mask.dart
+import 'package:easy_mask/easy_mask.dart';
 ...
   TextField(
     inputFormatters: [ TextInputMask(mask: ['999.999.999-99', '99.999.999/9999-99'] ],
@@ -63,30 +63,30 @@ import package:easy_mask/text_input_mask.dart
 
 ### **PlaceHolder Sample**
 
-`Import package:easy_mask/text_input_mask.dart`
+`import 'package:easy_mask/easy_mask.dart';`
 
 Then instantiate `TextInputMask` passing at least a String `mask` parameter.
 
 ``` dart
-import package:easy_mask/text_input_mask.dart
+import 'package:easy_mask/easy_mask.dart';
 ...
   TextField(
-    inputFormatters: [ TextInputMask(mask: '999.999.999-99', placeholder: '_', maxPlaceHolders: 11 ],
+    inputFormatters: [ TextInputMask(mask: '999.999.999-99', placeholder: '_', maxPlaceHolders: 11) ],
   ),
 ...
 ```
 
 ### **Pretty Currency Sample**
 
-`Import package:easy_mask/text_input_mask.dart`
+`import 'package:easy_mask/easy_mask.dart';`
 
 Then instantiate `TextInputMask` passing at least a String `mask` parameter.
 
 ``` dart
-import package:easy_mask/text_input_mask.dart
+import 'package:easy_mask/easy_mask.dart';
 ...
   TextField(
-    inputFormatters: [ TextInputMask(mask: '\$! !9+,999.99', placeholder: '0', maxPlaceHolders: 3, reverse: true],
+    inputFormatters: [ TextInputMask(mask: '\$! !9+,999.99', placeholder: '0', maxPlaceHolders: 3, reverse: true)],
   ),
 ...
 ```

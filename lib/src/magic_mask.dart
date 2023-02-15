@@ -104,9 +104,9 @@ class MagicMask {
       } else if (currentChar == '9') {
         _tags.add({_type: _token, _value: '\\d'});
       } else if (currentChar == 'A') {
-        _tags.add({_type: _token, _value: '[a-zA-z]'});
+        _tags.add({_type: _token, _value: '[a-zA-Z]'});
       } else if (currentChar == 'N') {
-        _tags.add({_type: _token, _value: '[a-zA-z0-9]'});
+        _tags.add({_type: _token, _value: '[a-zA-Z0-9]'});
       } else if (currentChar == 'X') {
         _tags.add({_type: _token, _value: '.'});
       } else {

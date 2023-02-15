@@ -93,6 +93,15 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 60),
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Brazilian Car Plate'),
+                inputFormatters: [
+                  TextInputMask(mask: 'AAA9N99')
+                ],
+              ),
+            ),
+            Container(
               padding: EdgeInsets.symmetric(horizontal: 120),
               child: TextField(
                 textAlign: TextAlign.right,

@@ -1,3 +1,7 @@
+## [2.0.2]
+
+* Fixed regex for letter input to reject "_" (underscore)
+
 ## 2.0.1
 
 * Fixed _overflow has not been initialized
